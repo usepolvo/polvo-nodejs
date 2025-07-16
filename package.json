@@ -1,0 +1,64 @@
+{
+    "name": "polvo",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "Production-ready HTTP client with OAuth2, rate limiting, and retries built-in",
+    "keywords": [
+        "http",
+        "client",
+        "oauth2",
+        "api",
+        "fetch",
+        "retry",
+        "rate-limit"
+    ],
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./auth": {
+            "import": "./dist/auth/index.js",
+            "types": "./dist/auth/index.d.ts"
+        },
+        "./storage": {
+            "import": "./dist/storage/index.js",
+            "types": "./dist/storage/index.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "test": "node --test test/**/*.test.js",
+        "lint": "eslint src/**/*.ts",
+        "prepare": "npm run build"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "typescript": "^5.0.0",
+        "eslint": "^8.0.0",
+        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/parser": "^6.0.0"
+    },
+    "author": "Polvo Team",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/usepolvo/polvo-nodejs.git"
+    },
+    "bugs": {
+        "url": "https://github.com/usepolvo/polvo-nodejs/issues"
+    },
+    "homepage": "https://docs.usepolvo.com"
+}

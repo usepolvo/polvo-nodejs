@@ -1,0 +1,82 @@
+/// <reference lib="dom" />
+
+export interface PolvoConfig {
+    baseURL?: string;
+    headers?: Record<string, string>;
+    timeout?: number;
+    auth?: AuthHandler;
+    retry?: boolean | RetryConfig;
+    json?: any;
+    data?: any;
+    params?: Record<string, string>;
+}
+
+export interface PolvoRequestConfig extends PolvoConfig {
+    method: string;
+    url: string;
+}
+
+export interface PolvoResponse extends Response {
+    data?: any;
+    config: PolvoRequestConfig;
+}
+
+export interface AuthHandler {
+    apply(config: PolvoRequestConfig): Promise<PolvoRequestConfig>;
+}
+
+export interface RetryConfig {
+    maxAttempts?: number;
+    baseDelay?: number;
+    maxDelay?: number;
+}
+
+export interface TokenStorage {
+    get(key: string): Promise<string | null>;
+    set(key: string, value: string, ttl?: number): Promise<void>;
+    delete(key: string): Promise<void>;
+}
+
+export interface OAuth2Config {
+    flow: 'client_credentials' | 'authorization_code' | 'password';
+    clientId: string;
+    clientSecret: string;
+    tokenUrl: string;
+    scopes?: string[];
+    refreshToken?: string;
+    tokenCache?: string | TokenStorage;
+    cacheEncryption?: boolean;
+}
+
+
+
+export interface PolvoError extends Error {
+    config?: PolvoRequestConfig;
+    response?: Response;
+    code?: string;
+}
+
+export class PolvoHTTPError extends Error implements PolvoError {
+    constructor(
+        message: string,
+        public config?: PolvoRequestConfig,
+        public response?: Response,
+        public code?: string
+    ) {
+        super(message);
+        this.name = 'PolvoHTTPError';
+    }
+}
+
+
+
+export class TokenRefreshError extends Error implements PolvoError {
+    constructor(
+        message: string,
+        public reason?: string,
+        public config?: PolvoRequestConfig
+    ) {
+        super(message);
+        this.name = 'TokenRefreshError';
+    }
+} 
