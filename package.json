@@ -69,6 +69,9 @@
     "url": "https://github.com/usepolvo/polvo-nodejs/issues"
   },
   "homepage": "https://docs.usepolvo.com",
+  "publishConfig": {
+    "access": "public"
+  },
   "lint-staged": {
     "*.ts": [
       "eslint --fix",
