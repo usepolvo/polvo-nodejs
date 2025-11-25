@@ -1,6 +1,6 @@
 {
   "name": "@usepolvo/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "description": "Production-ready HTTP client with OAuth2, rate limiting, and retries built-in",
   "keywords": [
