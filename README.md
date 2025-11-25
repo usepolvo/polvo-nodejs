@@ -7,11 +7,11 @@ The missing layer between `fetch` and enterprise service meshes. Handle the hard
 ## 🚀 Quick Start
 
 ```bash
-npm install polvo
+npm install @usepolvo/core
 ```
 
 ```javascript
-import polvo from "polvo";
+import polvo from "@usepolvo/core";
 
 // Simple as fetch
 const response = await polvo.get("https://api.github.com/users/octocat");
@@ -70,7 +70,7 @@ const session = polvo.create({
 The crown jewel - production-ready OAuth2 that actually works:
 
 ```javascript
-import { auth } from "polvo";
+import { auth } from "@usepolvo/core";
 
 // Explicit token storage (encrypted by default)
 const oauth = auth.oauth2({
@@ -115,7 +115,7 @@ const session = polvo.create({
 ### Simple One-off Requests
 
 ```javascript
-import polvo from "polvo";
+import polvo from "@usepolvo/core";
 
 // GET
 const data = await polvo
@@ -161,7 +161,7 @@ const response = await session.get("https://other-api.com/data");
 ### Authentication Patterns
 
 ```javascript
-import { auth } from "polvo";
+import { auth } from "@usepolvo/core";
 
 // Bearer tokens (most common)
 const bearerAuth = auth.bearer("your_token");
@@ -201,7 +201,7 @@ class CustomAuth extends auth.AuthBase {
 ### Advanced Configuration
 
 ```javascript
-import { storage } from "polvo";
+import { storage } from "@usepolvo/core";
 
 // Fine-grained control when you need it
 const session = polvo.create({
@@ -254,7 +254,7 @@ import axios from "axios";
 const response = await axios.get("https://api.example.com/data");
 
 // After (polvo) - nearly identical!
-import polvo from "polvo";
+import polvo from "@usepolvo/core";
 const response = await polvo.get("https://api.example.com/data");
 
 // Axios instances
@@ -288,7 +288,7 @@ const session = new polvo.Session(config);
 ### Authentication
 
 ```javascript
-import { auth } from 'polvo';
+import { auth } from "@usepolvo/core";
 
 auth.bearer(token)
 auth.basic(username, password)
@@ -299,7 +299,7 @@ auth.oauth2(config)
 ### Storage
 
 ```javascript
-import { storage } from "polvo";
+import { storage } from "@usepolvo/core";
 
 storage.encryptedFile(path); // Default: ~/.polvo/tokens.json
 storage.plainFile(path); // Not recommended for production
