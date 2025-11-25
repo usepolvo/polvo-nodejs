@@ -38,6 +38,11 @@ export class Session {
       },
     };
 
+    // Apply authentication if configured (before building fetch options)
+    if (requestConfig.auth) {
+      requestConfig = await requestConfig.auth.apply(requestConfig);
+    }
+
     // Prepare fetch options
     const fetchOptions: RequestInit = {
       method: requestConfig.method,
@@ -50,11 +55,6 @@ export class Session {
       fetchOptions.body = JSON.stringify(requestConfig.json);
     } else if (requestConfig.data) {
       fetchOptions.body = requestConfig.data;
-    }
-
-    // Apply authentication if configured
-    if (requestConfig.auth) {
-      requestConfig = await requestConfig.auth.apply(requestConfig);
     }
 
     // Add query parameters
