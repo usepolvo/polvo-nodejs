@@ -1,0 +1,61 @@
+{
+  "name": "@usepolvo/linear",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Linear integration connector for Polvo - typed client and webhook utilities",
+  "keywords": [
+    "linear",
+    "api",
+    "webhook",
+    "graphql",
+    "integration"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./webhook": {
+      "import": "./dist/webhook/index.js",
+      "types": "./dist/webhook/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client.js",
+      "types": "./dist/client.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@usepolvo/core": "workspace:*",
+    "@usepolvo/webhook": "workspace:*"
+  },
+  "peerDependencies": {
+    "zod": "^3.22.0"
+  },
+  "author": "Polvo Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usepolvo/polvo-nodejs.git",
+    "directory": "packages/linear"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "zod": "^4.1.13"
+  }
+}

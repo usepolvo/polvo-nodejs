@@ -114,9 +114,8 @@ export { Session };
 // Re-export all types
 export * from "./types.js";
 
-// Re-export sub-modules
+// Re-export auth module
 export * as auth from "./auth/index.js";
-export * as storage from "./storage/index.js";
 
 // Default export
 export default polvo;

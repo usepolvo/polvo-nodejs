@@ -1,0 +1,42 @@
+{
+  "name": "@usepolvo/webhook",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Webhook verification utilities for Polvo integration connectors",
+  "keywords": [
+    "webhook",
+    "hmac",
+    "verification",
+    "signature"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Polvo Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usepolvo/polvo-nodejs.git",
+    "directory": "packages/webhook"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

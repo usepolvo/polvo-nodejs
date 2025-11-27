@@ -1,7 +1,7 @@
 import polvo, { auth } from "@usepolvo/core";
 
-async function oauthSessionExample() {
-  console.log("🐙 Polvo OAuth2 & Session Example\n");
+async function authSessionExample() {
+  console.log("Polvo Auth & Session Example\n");
 
   try {
     // 1. Simple bearer token authentication
@@ -60,38 +60,4 @@ async function oauthSessionExample() {
   }
 }
 
-// OAuth2 example (commented out as it requires real credentials)
-async function oauth2Example() {
-  console.log(
-    "\n🔐 OAuth2 Example (commented out - requires real credentials)\n"
-  );
-
-  /*
-  // This would work with real OAuth2 credentials
-  const oauth = auth.oauth2({
-    flow: 'client_credentials',
-    clientId: 'your-client-id',
-    clientSecret: 'your-client-secret',
-    tokenUrl: 'https://your-auth-server.com/oauth/token',
-    tokenCache: './tokens.json', // Encrypted by default
-    scopes: ['api:read', 'api:write']
-  });
-
-  const session = polvo.create({
-    baseURL: 'https://your-api.com',
-    auth: oauth,
-    retry: true
-  });
-
-  // OAuth2 token will be automatically fetched and refreshed
-  const protectedData = await session.get('/protected-endpoint');
-  console.log('Protected data:', protectedData.data);
-  */
-
-  console.log("Example OAuth2 configuration shown in comments above");
-}
-
-// Run the examples
-oauthSessionExample().then(() => {
-  oauth2Example();
-});
+authSessionExample();

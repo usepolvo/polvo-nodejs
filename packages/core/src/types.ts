@@ -31,23 +31,6 @@ export interface RetryConfig {
   maxDelay?: number;
 }
 
-export interface TokenStorage {
-  get(key: string): Promise<string | null>;
-  set(key: string, value: string, ttl?: number): Promise<void>;
-  delete(key: string): Promise<void>;
-}
-
-export interface OAuth2Config {
-  flow: "client_credentials" | "authorization_code" | "password";
-  clientId: string;
-  clientSecret: string;
-  tokenUrl: string;
-  scopes?: string[];
-  refreshToken?: string;
-  tokenCache?: string | TokenStorage;
-  cacheEncryption?: boolean;
-}
-
 export interface PolvoError extends Error {
   config?: PolvoRequestConfig;
   response?: Response;
@@ -63,16 +46,5 @@ export class PolvoHTTPError extends Error implements PolvoError {
   ) {
     super(message);
     this.name = "PolvoHTTPError";
-  }
-}
-
-export class TokenRefreshError extends Error implements PolvoError {
-  constructor(
-    message: string,
-    public reason?: string,
-    public config?: PolvoRequestConfig
-  ) {
-    super(message);
-    this.name = "TokenRefreshError";
   }
 }

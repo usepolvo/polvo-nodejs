@@ -1,46 +1,16 @@
 {
-  "name": "@usepolvo/core",
-  "version": "0.0.3",
+  "name": "polvo",
+  "private": true,
   "type": "module",
-  "description": "Production-ready HTTP client with OAuth2, rate limiting, and retries built-in",
-  "keywords": [
-    "http",
-    "client",
-    "oauth2",
-    "api",
-    "fetch",
-    "retry",
-    "rate-limit"
-  ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./auth": {
-      "import": "./dist/auth/index.js",
-      "types": "./dist/auth/index.d.ts"
-    },
-    "./storage": {
-      "import": "./dist/storage/index.js",
-      "types": "./dist/storage/index.d.ts"
-    }
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
+  "description": "Integration connector toolkit with OAuth2, typed clients, and webhook utilities",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "test": "node --test test/**/*.test.js",
-    "lint": "eslint src",
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel dev",
+    "test": "pnpm -r test",
+    "lint": "eslint packages/*/src",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "pnpm -r typecheck",
     "prepare": "husky"
   },
   "engines": {
@@ -69,9 +39,6 @@
     "url": "https://github.com/usepolvo/polvo-nodejs/issues"
   },
   "homepage": "https://docs.usepolvo.com",
-  "publishConfig": {
-    "access": "public"
-  },
   "lint-staged": {
     "*.ts": [
       "eslint --fix",

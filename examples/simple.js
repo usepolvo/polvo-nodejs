@@ -1,7 +1,7 @@
 import polvo from "@usepolvo/core";
 
 async function simpleExample() {
-  console.log("🐙 Simple Polvo Example\n");
+  console.log("Simple Polvo Example\n");
 
   try {
     // Simple GET request
