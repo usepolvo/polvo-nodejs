@@ -42,6 +42,18 @@ importers:
         specifier: ^8.48.0
         version: 8.48.0(eslint@9.39.1)(typescript@5.9.3)
 
+  examples:
+    dependencies:
+      '@usepolvo/core':
+        specifier: workspace:*
+        version: link:../packages/core
+      '@usepolvo/linear':
+        specifier: workspace:*
+        version: link:../packages/linear
+      '@usepolvo/webhook':
+        specifier: workspace:*
+        version: link:../packages/webhook
+
   packages/core: {}
 
   packages/linear:

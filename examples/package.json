@@ -1,0 +1,10 @@
+{
+  "name": "examples",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@usepolvo/core": "workspace:*",
+    "@usepolvo/linear": "workspace:*",
+    "@usepolvo/webhook": "workspace:*"
+  }
+}

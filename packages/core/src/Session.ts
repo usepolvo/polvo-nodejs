@@ -44,10 +44,11 @@ export class Session {
     }
 
     // Prepare fetch options
+    const abort = this._createAbortSignal(requestConfig.timeout);
     const fetchOptions: RequestInit = {
       method: requestConfig.method,
       headers: requestConfig.headers,
-      signal: this._createAbortSignal(requestConfig.timeout),
+      signal: abort.signal,
     };
 
     // Handle request body
@@ -70,6 +71,9 @@ export class Session {
         fetchOptions,
         requestConfig
       )) as PolvoResponse;
+
+      // Clear timeout to avoid keeping process alive
+      abort.clear();
 
       // Attach config to response
       response.config = requestConfig;
@@ -96,6 +100,8 @@ export class Session {
 
       return response;
     } catch (error) {
+      abort.clear();
+
       if (error instanceof PolvoHTTPError) {
         throw error;
       }
@@ -177,12 +183,18 @@ export class Session {
     return urlObj.href;
   }
 
-  private _createAbortSignal(timeout?: number): AbortSignal | undefined {
-    if (!timeout) return undefined;
+  private _createAbortSignal(timeout?: number): {
+    signal?: AbortSignal;
+    clear: () => void;
+  } {
+    if (!timeout) return { signal: undefined, clear: () => {} };
 
     const controller = new AbortController();
-    setTimeout(() => controller.abort(), timeout);
-    return controller.signal;
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    return {
+      signal: controller.signal,
+      clear: () => clearTimeout(timeoutId),
+    };
   }
 
   private async _makeRequestWithRetry(
