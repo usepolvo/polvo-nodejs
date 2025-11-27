@@ -1,6 +1,6 @@
 {
   "name": "@usepolvo/linear",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
   "description": "Linear integration connector for Polvo - typed client and webhook utilities",
   "keywords": [
