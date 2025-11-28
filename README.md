@@ -29,21 +29,41 @@ pnpm add @usepolvo/linear zod
 
 ```typescript
 import { LinearClient } from "@usepolvo/linear";
-import {
-  verifyLinearWebhook,
-  parseLinearWebhook,
-  isAgentSessionWebhook,
-} from "@usepolvo/linear/webhook";
+import { oauth2 } from "@usepolvo/core";
 
-// API client
-const client = new LinearClient({ accessToken: process.env.LINEAR_TOKEN });
+// OAuth setup
+const auth = oauth2({
+  clientId: process.env.LINEAR_CLIENT_ID,
+  clientSecret: process.env.LINEAR_CLIENT_SECRET,
+  authorizationUrl: "https://linear.app/oauth/authorize",
+  tokenUrl: "https://api.linear.app/oauth/token",
+  redirectUri: "http://localhost:3000/callback",
+  scopes: ["read", "write"],
+});
+
+// 1. Redirect user to authorize
+const { url } = auth.getAuthorizationUrl();
+
+// 2. Exchange code for tokens (in your callback handler)
+const tokens = await auth.exchangeCode(code);
+
+// 3. Use with Linear client
+const client = new LinearClient({ accessToken: tokens.accessToken });
 
 const result = await client.query<{ issue: { title: string } }>(
   `query GetIssue($id: String!) { issue(id: $id) { title } }`,
   { id: "issue-123" }
 );
+```
 
-// Webhook handling
+#### Webhooks
+
+```typescript
+import {
+  verifyLinearWebhook,
+  parseLinearWebhook,
+} from "@usepolvo/linear/webhook";
+
 function handleWebhook(rawBody: string, signature: string) {
   const isValid = verifyLinearWebhook(
     rawBody,
@@ -55,10 +75,7 @@ function handleWebhook(rawBody: string, signature: string) {
   const result = parseLinearWebhook(JSON.parse(rawBody));
   if (!result.success) return { status: 400, error: result.error };
 
-  if (isAgentSessionWebhook(result.data)) {
-    console.log("Agent session:", result.data.agentSession.id);
-  }
-
+  console.log("Webhook:", result.data);
   return { status: 200 };
 }
 ```

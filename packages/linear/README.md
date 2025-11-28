@@ -1,21 +1,45 @@
 # @usepolvo/linear
 
-Linear API client and webhook utilities with Zod schemas.
+Linear connector with OAuth, GraphQL client, and webhook utilities.
 
 ## Install
 
 ```bash
-pnpm add @usepolvo/linear zod
+pnpm add @usepolvo/linear @usepolvo/core zod
 ```
 
-## API Client
+## OAuth
+
+```typescript
+import { LinearClient } from "@usepolvo/linear";
+import { oauth2 } from "@usepolvo/core";
+
+const auth = oauth2({
+  clientId: process.env.LINEAR_CLIENT_ID,
+  clientSecret: process.env.LINEAR_CLIENT_SECRET,
+  authorizationUrl: "https://linear.app/oauth/authorize",
+  tokenUrl: "https://api.linear.app/oauth/token",
+  redirectUri: "http://localhost:3000/callback",
+  scopes: ["read", "write"],
+});
+
+// Redirect user to authorize
+const { url } = auth.getAuthorizationUrl();
+
+// Exchange code for tokens (in callback)
+const tokens = await auth.exchangeCode(code);
+
+// Use with client
+const client = new LinearClient({ accessToken: tokens.accessToken });
+```
+
+## GraphQL Client
 
 ```typescript
 import { LinearClient } from "@usepolvo/linear";
 
 const client = new LinearClient({ accessToken: process.env.LINEAR_TOKEN });
 
-// Execute any GraphQL query
 const result = await client.query<{
   issue: { title: string; state: { name: string } };
 }>(
@@ -31,73 +55,28 @@ const result = await client.query<{
 console.log(result.issue.title);
 ```
 
-## Webhook Handling
+## Webhooks
 
 ```typescript
 import {
   verifyLinearWebhook,
   parseLinearWebhook,
-  isIssueWebhook,
-  isAgentSessionWebhook,
-  isAgentActivityWebhook,
 } from "@usepolvo/linear/webhook";
 
 function handleWebhook(rawBody: string, signature: string) {
-  // 1. Verify signature
   const isValid = verifyLinearWebhook(
     rawBody,
     signature,
     process.env.WEBHOOK_SECRET
   );
-  if (!isValid) {
-    return { status: 401, error: "Invalid signature" };
-  }
+  if (!isValid) return { status: 401 };
 
-  // 2. Parse with Zod validation
   const result = parseLinearWebhook(JSON.parse(rawBody));
-  if (!result.success) {
-    return { status: 400, error: result.error };
-  }
+  if (!result.success) return { status: 400, error: result.error };
 
-  // 3. Handle typed webhook
-  const webhook = result.data;
-
-  if (isIssueWebhook(webhook)) {
-    console.log("Issue:", webhook.data.title, webhook.action);
-  }
-
-  if (isAgentSessionWebhook(webhook)) {
-    console.log("Agent session:", webhook.agentSession.id);
-    console.log("Comment:", webhook.agentSession.comment.body);
-  }
-
-  if (isAgentActivityWebhook(webhook)) {
-    console.log("Activity:", webhook.agentActivity.content.type);
-  }
-
+  console.log("Webhook:", result.data);
   return { status: 200 };
 }
-```
-
-## Webhook Types
-
-The following webhook types are supported with full Zod schemas:
-
-- `Issue` - Issue create/update/remove events
-- `AgentSessionEvent` - Agent mention events (@agent)
-- `AgentActivity` - Agent session activity (prompts, responses)
-- `Comment` - Comment events
-
-## Type Guards
-
-```typescript
-import {
-  isIssueWebhook,
-  isAgentSessionWebhook,
-  isAgentActivityWebhook,
-  isCommentWebhook,
-  isPromptActivity,
-} from "@usepolvo/linear/webhook";
 ```
 
 ## License
