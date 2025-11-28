@@ -1,6 +1,6 @@
 {
   "name": "@usepolvo/core",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "type": "module",
   "description": "Lightweight HTTP client with retries and simple auth handlers",
   "keywords": [
