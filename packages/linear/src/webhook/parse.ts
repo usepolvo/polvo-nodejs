@@ -1,16 +1,5 @@
 import type { WebhookParseResult } from "@usepolvo/webhook";
-import {
-  LinearWebhookSchema,
-  IssueWebhookSchema,
-  AgentSessionWebhookSchema,
-  AgentActivityWebhookSchema,
-  CommentWebhookSchema,
-  type LinearWebhook,
-  type IssueWebhook,
-  type AgentSessionWebhook,
-  type AgentActivityWebhook,
-  type CommentWebhook,
-} from "./schemas.js";
+import { LinearWebhookSchema, type LinearWebhook } from "./schemas.js";
 
 /**
  * Parse and validate a Linear webhook payload.
@@ -44,51 +33,4 @@ export function parseLinearWebhook(
     success: true,
     data: result.data,
   };
-}
-
-// ─────────────────────────────────────────────────────────────
-// Type guards
-// ─────────────────────────────────────────────────────────────
-
-/**
- * Check if the webhook is an Issue event
- */
-export function isIssueWebhook(
-  webhook: LinearWebhook
-): webhook is IssueWebhook {
-  return webhook.type === "Issue";
-}
-
-/**
- * Check if the webhook is an AgentSessionEvent
- */
-export function isAgentSessionWebhook(
-  webhook: LinearWebhook
-): webhook is AgentSessionWebhook {
-  return webhook.type === "AgentSessionEvent";
-}
-
-/**
- * Check if the webhook is an AgentActivity event
- */
-export function isAgentActivityWebhook(
-  webhook: LinearWebhook
-): webhook is AgentActivityWebhook {
-  return webhook.type === "AgentActivity";
-}
-
-/**
- * Check if the webhook is a Comment event
- */
-export function isCommentWebhook(
-  webhook: LinearWebhook
-): webhook is CommentWebhook {
-  return webhook.type === "Comment";
-}
-
-/**
- * Check if an AgentActivity is a user prompt (message)
- */
-export function isPromptActivity(webhook: AgentActivityWebhook): boolean {
-  return webhook.agentActivity.content.type === "prompt";
 }
