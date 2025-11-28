@@ -1,6 +1,6 @@
 {
   "name": "@usepolvo/webhook",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "type": "module",
   "description": "Webhook verification utilities for Polvo integration connectors",
   "keywords": [
