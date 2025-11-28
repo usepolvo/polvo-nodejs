@@ -17,6 +17,7 @@
     "node": ">=18.0.0"
   },
   "devDependencies": {
+    "@anolilab/semantic-release-pnpm": "^3.1.0",
     "@eslint/js": "^9.39.1",
     "@semantic-release/git": "^10.0.1",
     "@types/node": "^24.10.1",
