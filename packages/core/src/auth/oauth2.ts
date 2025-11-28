@@ -11,6 +11,7 @@ export interface OAuth2Config {
   redirectUri: string;
   scopes?: string[];
   usePKCE?: boolean;
+  extraParams?: Record<string, string>;
 }
 
 export interface OAuth2Tokens {
@@ -38,7 +39,10 @@ export class OAuth2Auth implements AuthHandler {
     return this.config.usePKCE ?? !this.config.clientSecret;
   }
 
-  getAuthorizationUrl(state?: string): { url: string; codeVerifier?: string } {
+  getAuthorizationUrl(
+    state?: string,
+    extraParams?: Record<string, string>
+  ): { url: string; codeVerifier?: string } {
     const params = new URLSearchParams({
       client_id: this.config.clientId,
       response_type: "code",
@@ -50,6 +54,10 @@ export class OAuth2Auth implements AuthHandler {
     }
     if (state) {
       params.set("state", state);
+    }
+    const allExtraParams = { ...this.config.extraParams, ...extraParams };
+    for (const [key, value] of Object.entries(allExtraParams)) {
+      params.set(key, value);
     }
 
     let codeVerifier: string | undefined;

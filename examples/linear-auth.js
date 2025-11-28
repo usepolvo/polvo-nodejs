@@ -21,7 +21,8 @@ const oauth = auth.oauth2({
   authorizationUrl: "https://linear.app/oauth/authorize",
   tokenUrl: "https://api.linear.app/oauth/token",
   redirectUri: LINEAR_REDIRECT_URI,
-  scopes: ["read", "write"],
+  scopes: ["read", "write", "app:assignable", "app:mentionable"],
+  extraParams: { actor: "app" },
   usePKCE: true,
 });
 
