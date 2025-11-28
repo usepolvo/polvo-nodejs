@@ -24,53 +24,60 @@ async function linearClientExample() {
         }
       }
     `);
-    console.log("Your issues:", myIssues.viewer?.assignedIssues?.nodes);
+    const issues = myIssues.viewer?.assignedIssues?.nodes || [];
+    console.log("Your issues:", issues);
     console.log("");
 
-    // Query a specific issue
-    console.log("2. Query specific issue");
-    const issue = await client.query(
-      `
-      query GetIssue($id: String!) {
-        issue(id: $id) {
-          id
-          title
-          description
-          state { name }
-          team { name }
-          assignee { name }
-        }
-      }
-    `,
-      { id: "your-issue-id" }
-    );
-    console.log("Issue:", issue.issue);
-    console.log("");
-
-    // Create an issue
-    console.log("3. Create issue (example mutation)");
-    const createResult = await client.query(
-      `
-      mutation CreateIssue($input: IssueCreateInput!) {
-        issueCreate(input: $input) {
-          success
-          issue {
+    // Query a specific issue (using first result from above)
+    let teamId;
+    if (issues.length > 0) {
+      console.log("2. Query specific issue");
+      const issue = await client.query(
+        `
+        query GetIssue($id: String!) {
+          issue(id: $id) {
             id
             title
-            url
+            description
+            state { name }
+            team { id name }
+            assignee { name }
           }
         }
-      }
-    `,
-      {
-        input: {
-          teamId: "your-team-id",
-          title: "New issue from Polvo",
-          description: "Created via @usepolvo/linear",
-        },
-      }
-    );
-    console.log("Created:", createResult.issueCreate);
+      `,
+        { id: issues[0].id }
+      );
+      console.log("Issue:", issue.issue);
+      teamId = issue.issue?.team?.id;
+      console.log("");
+    }
+
+    // Create an issue (using team from above)
+    if (teamId) {
+      console.log("3. Create issue");
+      const createResult = await client.query(
+        `
+        mutation CreateIssue($input: IssueCreateInput!) {
+          issueCreate(input: $input) {
+            success
+            issue {
+              id
+              title
+              url
+            }
+          }
+        }
+      `,
+        {
+          input: {
+            teamId,
+            title: "New issue from Polvo",
+            description: "Created via @usepolvo/linear",
+          },
+        }
+      );
+      console.log("Created:", createResult.issueCreate);
+    }
   } catch (error) {
     console.error("Error:", error.message);
     if (error.message.includes("401")) {

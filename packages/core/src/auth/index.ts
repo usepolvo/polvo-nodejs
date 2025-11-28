@@ -67,3 +67,13 @@ export function apiKey(key: string, headerName?: string): ApiKeyAuth {
 export function basic(username: string, password: string): BasicAuth {
   return new BasicAuth(username, password);
 }
+
+// OAuth2
+export {
+  OAuth2Auth,
+  OAuth2Config,
+  OAuth2Tokens,
+  TokenStorage,
+  oauth2,
+  memoryStorage,
+} from "./oauth2.js";
